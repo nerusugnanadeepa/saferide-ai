@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeRide AI — Hardware-Free Student Safety Platform</title>
+    <!-- Modern Google Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --panel-bg: rgba(22, 31, 49, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --success-color: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.3);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+            overflow-x: hidden;
+        }
+
+        /* Top Header */
+        header {
+            background: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #0284c7, #10b981);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .brand-title h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title p {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+            gap: 4px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(16, 185, 129, 0.2));
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .github-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .github-pill:hover {
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        /* Main Workspace Container */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .grid-3-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+
+        @media (max-width: 992px) {
+            .grid-2, .grid-3, .grid-3-1 { grid-template-columns: 1fr; }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .card-title i { color: var(--accent-primary); }
+
+        /* Metric Counters */
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-val { font-size: 1.5rem; font-weight: 700; color: white; }
+        .stat-lbl { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Driver App Viewfinder Simulator */
+        .camera-viewfinder {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--panel-border);
+        }
+
+        .camera-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            filter: contrast(1.05);
+        }
+
+        .bounding-box {
+            position: absolute;
+            width: 140px;
+            height: 160px;
+            border: 2px dashed var(--accent-primary);
+            border-radius: 16px;
+            box-shadow: 0 0 25px var(--accent-glow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .bounding-box.matched {
+            border-color: var(--success-color);
+            border-style: solid;
+            box-shadow: 0 0 35px var(--success-glow);
+        }
+
+        .bounding-box.failed {
+            border-color: var(--danger-color);
+            border-style: solid;
+            box-shadow: 0 0 35px var(--danger-glow);
+        }
+
+        .box-label {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+        }
+
+        /* GPS Distance Slider Controls */
+        .slider-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid var(--panel-border);
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--accent-primary);
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        /* Notification Feed */
+        .notification-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notif-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--accent-primary);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .notif-item.success { border-left-color: var(--success-color); }
+        .notif-item.warning { border-left-color: var(--warning-color); }
+        .notif-item.danger { border-left-color: var(--danger-color); }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .notif-title { font-weight: 600; font-size: 0.9rem; color: white; margin-bottom: 2px; }
+        .notif-body { font-size: 0.8rem; color: var(--text-muted); }
+        .notif-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+
+        /* Multi-Factor Verification Matrix Table */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .matrix-table th, .matrix-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .matrix-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-verified { background: rgba(16, 185, 129, 0.15); color: var(--success-color); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-flagged { background: rgba(239, 68, 68, 0.15); color: var(--danger-color); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-pending { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        /* GitHub Multi-Agent Diagram */
+        .agent-tree {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) { .agent-tree { grid-template-columns: 1fr; } }
+
+        .agent-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.25s;
+        }
+
+        .agent-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .agent-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-primary);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .cmd-box {
+            background: #060911;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: #38bdf8;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #0284c7, #0d9488);
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--panel-border);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-bus-simple"></i>
+            </div>
+            <div class="brand-title">
+                <h1>SafeRide AI</h1>
+                <p>Hardware-Free Student Transit Safety Platform</p>
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="switchView('driver')">
+                <i class="fa-solid fa-id-card-clip"></i> Driver Scanner App
+            </button>
+            <button class="nav-tab" onclick="switchView('parent')">
+                <i class="fa-solid fa-mobile-screen-button"></i> Parent Mobile App
+            </button>
+            <button class="nav-tab" onclick="switchView('admin')">
+                <i class="fa-solid fa-chart-line"></i> School Management Portal
+            </button>
+            <button class="nav-tab" onclick="switchView('github')">
+                <i class="fa-brands fa-github"></i> 4-Agent Git Workflow
+            </button>
+        </nav>
+
+        <a href="https://github.com/nerusugnanadeepa/saferide-ai" target="_blank" class="github-pill">
+            <i class="fa-brands fa-github"></i> nerusugnanadeepa/saferide-ai
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        
+        <!-- VIEW 1: DRIVER APP SIMULATOR -->
+        <section id="view-driver" class="view-section active">
+            <div class="grid-3-1">
+                <!-- Left: Scanner Viewfinder & Controls -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-camera"></i> Driver Scanner Interface — Bus 12 (Morning Route)
+                        </div>
+                        <span class="status-badge badge-verified"><i class="fa-solid fa-satellite-dish"></i> GPS Active</span>
+                    </div>
+
+                    <!-- Simulated Camera Viewfinder -->
+                    <div class="camera-viewfinder">
+                        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80" alt="Student Simulation" class="camera-feed" id="cameraFeed">
+                        <div class="bounding-box" id="boundingBox">
+                            <span class="box-label" id="boxLabel">SEARCHING...</span>
+                        </div>
+                    </div>
+
+                    <!-- GPS Stop Proximity Controls -->
+                    <div style="margin-top: 1.5rem;" class="slider-container">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label style="font-weight: 500; font-size: 0.9rem; color: white;">
+                                <i class="fa-solid fa-location-dot" style="color: var(--accent-primary);"></i> 
+                                Simulated Bus Proximity to Stop #3 (Green Park)
+                            </label>
+                            <span id="distanceVal" style="font-family: 'JetBrains Mono'; color: var(--accent-primary); font-weight: 600;">120m</span>
+                        </div>
+                        <input type="range" id="gpsSlider" min="0" max="200" value="120" oninput="updateGpsProximity(this.value)">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+                            <span>0m (At Stop)</span>
+                            <span style="color: var(--success-color);">Geofence Threshold (50m)</span>
+                            <span>200m (Far)</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Controls -->
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button class="btn-action" onclick="triggerBoardingScan('VALID')">
+                            <i class="fa-solid fa-face-smile"></i> Scan Student (Valid Case: Rohan)
+                        </button>
+                        <button class="btn-action" style="background: linear-gradient(135deg, #ef4444, #b91c1c);" onclick="triggerBoardingScan('WRONG_BUS')">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Scan Student (Wrong Bus Test)
+                        </button>
+                        <button class="btn-secondary" onclick="triggerFallbackPin()">
+                            <i class="fa-solid fa-key"></i> PIN Fallback
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Multi-Factor Verification Output -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-shield-halved"></i> Multi-Factor Matrix Logic
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 0.78rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                        <span style="color: var(--text-muted);">// Verification Formula</span><br>
+                        Valid = (FaceSim &ge; 0.75) &amp;&amp; (BusMatch == True) &amp;&amp; (Dist &le; 50m)
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;" id="matrixIndicators">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(56,189,248,0.1); color: var(--accent-primary);">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <div>
+                                <div class="stat-lbl">Face Embedding Match</div>
+                                <div class="stat-val" id="matFaceVal" style="font-size: 1rem;">Waiting...</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(16,185,129,0.1); color: var(--success-color);">
+                                <i class="fa-solid fa-bus"></i>
+                            </div>
+                            <div>
+                                <div class="stat-lbl">Assigned Bus Match</div>
+                                <div class="stat-val" id="matBusVal" style="font-size: 1rem;">Bus 12</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(245,158,11,0.1); color: var(--warning-color);">
+                                <i class="fa-solid fa-draw-polygon"></i>
+                            </div>
+                            <div>
+                                <div class="stat-lbl">Stop Geofence Status</div>
+                                <div class="stat-val" id="matGeofenceVal" style="font-size: 1rem; color: var(--warning-color);">OUTSIDE (120m)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; text-align: center; padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.02);" id="finalResultBanner">
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">BOARDING STATUS</span>
+                        <div style="font-size: 1.3rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;" id="finalResultText">READY FOR INPUT</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: PARENT MOBILE APP -->
+        <section id="view-parent" class="view-section">
+            <div class="grid-2">
+                <!-- Left: Parent Dashboard & Live Map -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-child"></i> Parent View — Child: Rohan Verma (Class 4-B)
+                        </div>
+                        <span class="status-badge badge-verified">Assigned: Bus 12</span>
+                    </div>
+
+                    <!-- Simulated Pickup GPS Location Card -->
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; font-size: 0.95rem; color: white;">Registered Pickup Location</span>
+                            <span style="font-size: 0.75rem; color: var(--accent-primary); cursor: pointer;" onclick="alert('Opening GPS Map Pin Selector...')"><i class="fa-solid fa-pen-to-square"></i> Edit Pin</span>
+                        </div>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);"><i class="fa-solid fa-location-dot" style="color: var(--danger-color);"></i> Stop #3 — Green Park Colony, Sector 14 (Lat: 17.4452, Lng: 78.3812)</p>
+                    </div>
+
+                    <!-- Live Bus Status Tracking Card -->
+                    <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(56,189,248,0.2); color: var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            <i class="fa-solid fa-route"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Live Bus Status</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: white;" id="parentBusStatusText">En Route to Stop #3</div>
+                            <div style="font-size: 0.75rem; color: var(--accent-primary); margin-top: 2px;" id="parentEtaText">ETA to your stop: ~4 mins</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Real-time FCM Notification Stream -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fa-solid fa-bell"></i> Live Push Notification Feed (FCM)
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);" id="notifCount">2 Notifications</span>
+                    </div>
+
+                    <div class="notification-feed" id="parentNotifFeed">
+                        <!-- Alert #1 -->
+                        <div class="notif-item warning" id="notifAlert1" style="display: none;">
+                            <i class="fa-solid fa-bus-simple" style="color: var(--warning-color); font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div>
+                                <div class="notif-title">🚌 ALERT #1: Bus Arrived at Pickup Location</div>
+                                <div class="notif-body">Bus #12 has reached your registered stop at Green Park (Within 50m radius).</div>
+                                <div class="notif-time" id="timeAlert1">Just now</div>
+                            </div>
+                        </div>
+
+                        <!-- Alert #2 -->
+                        <div class="notif-item success" id="notifAlert2" style="display: none;">
+                            <i class="fa-solid fa-circle-check" style="color: var(--success-color); font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div>
+                                <div class="notif-title">✅ ALERT #2: Boarding Confirmed</div>
+                                <div class="notif-body">Rohan safely boarded Bus #12. Multi-factor verification matched (Face + Bus 12 + Stop 3).</div>
+                                <div class="notif-time" id="timeAlert2">Just now</div>
+                            </div>
+                        </div>
+
+                        <!-- Exception Alert -->
+                        <div class="notif-item danger" id="notifAlertException" style="display: none;">
+                            <i class="fa-solid fa-triangle-exclamation" style="color: var(--danger-color); font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div>
+                                <div class="notif-title">🚨 SAFETY ALERT: Unassigned Bus Boarding Attempt</div>
+                                <div class="notif-body">Rohan's face was detected on Bus #08 (Expected: Bus #12). Event flagged for admin review.</div>
+                                <div class="notif-time" id="timeAlertException">Just now</div>
+                            </div>
+                        </div>
+
+                        <div class="notif-item" id="notifInitial">
+                            <i class="fa-solid fa-info-circle" style="color: var(--accent-primary); font-size: 1.2rem; margin-top: 2px;"></i>
+                            <div>
+                                <div class="notif-title">System Ready</div>
+                                <div class="notif-body">Waiting for driver app route triggers...</div>
+                                <div class="notif-time">07:30 AM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: SCHOOL MANAGEMENT PORTAL -->
+        <section id="view-admin" class="view-section">
+            <!-- Stat Cards Header -->
+            <div class="grid-3" style="margin-bottom: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(56,189,248,0.1); color: var(--accent-primary);">
+                        <i class="fa-solid fa-bus"></i>
+                    </div>
+                    <div>
+                        <div class="stat-val">14 / 14</div>
+                        <div class="stat-lbl">Active Fleet Buses</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(16,185,129,0.1); color: var(--success-color);">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <div class="stat-val" id="adminBoardedCount">482</div>
+                        <div class="stat-lbl">Boarded Students Today</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(239,68,68,0.1); color: var(--danger-color);">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <div class="stat-val" style="color: var(--danger-color);" id="adminExceptionCount">1</div>
+                        <div class="stat-lbl">Flagged Safety Exceptions</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-list-check"></i> Real-time Transit Boarding &amp; Exception Register
+                    </div>
+                    <button class="btn-action" style="padding: 6px 12px; font-size: 0.78rem;" onclick="alert('Exporting Audit Log PDF...')">
+                        <i class="fa-solid fa-download"></i> Export Audit Log
+                    </button>
+                </div>
+
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Student Official ID</th>
+                            <th>Student Name</th>
+                            <th>Assigned Bus</th>
+                            <th>Scanned Bus</th>
+                            <th>Geofence Stop</th>
+                            <th>Verification Method</th>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                        <tr>
+                            <td style="font-family: 'JetBrains Mono';">STU-9921</td>
+                            <td><strong>Rohan Verma</strong></td>
+                            <td>Bus 12</td>
+                            <td>Bus 12</td>
+                            <td>Stop #3 (Green Park)</td>
+                            <td>Face Matching (Sim: 0.89)</td>
+                            <td style="font-family: 'JetBrains Mono';">07:42:15 AM</td>
+                            <td><span class="status-badge badge-verified"><i class="fa-solid fa-check"></i> VERIFIED</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: 'JetBrains Mono';">STU-8840</td>
+                            <td>Ananya Sharma</td>
+                            <td>Bus 12</td>
+                            <td>Bus 12</td>
+                            <td>Stop #2 (Jubilee Hills)</td>
+                            <td>Face Matching (Sim: 0.84)</td>
+                            <td style="font-family: 'JetBrains Mono';">07:35:10 AM</td>
+                            <td><span class="status-badge badge-verified"><i class="fa-solid fa-check"></i> VERIFIED</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: 'JetBrains Mono';">STU-7712</td>
+                            <td>Kabir Mehta</td>
+                            <td>Bus 05</td>
+                            <td>Bus 05</td>
+                            <td>Stop #1 (Banjara Hills)</td>
+                            <td>Manual PIN Override</td>
+                            <td style="font-family: 'JetBrains Mono';">07:28:40 AM</td>
+                            <td><span class="status-badge badge-pending"><i class="fa-solid fa-key"></i> PIN OVERRIDE</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- VIEW 4: GITHUB MULTI-AGENT WORKFLOW -->
+        <section id="view-github" class="view-section">
+            <div class="glass-card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-brands fa-github"></i> 4-Agent GitHub Branch Architecture &amp; Task Division
+                    </div>
+                    <span class="status-badge badge-verified">Target: nerusugnanadeepa/saferide-ai</span>
+                </div>
+
+                <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                    To maximize velocity during a 24-hour hackathon, the development strategy is distributed across **4 specialized feature agents** monitored by **1 Lead Integration Agent** on the <code>main</code> branch.
+                </p>
+
+                <div class="agent-tree">
+                    <div class="agent-card">
+                        <span class="agent-badge">Agent 1</span>
+                        <div style="font-weight: 600; color: white; margin-bottom: 4px;">Backend &amp; DB Core</div>
+                        <div style="font-size: 0.78rem; color: var(--accent-primary); font-family: 'JetBrains Mono'; margin-bottom: 8px;">feature/agent-1-backend-db</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Supabase PostgreSQL schema, PostGIS spatial queries, 128D vector embeddings, and Multi-Factor API.</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <span class="agent-badge">Agent 2</span>
+                        <div style="font-weight: 600; color: white; margin-bottom: 4px;">Driver App &amp; Vision</div>
+                        <div style="font-size: 0.78rem; color: var(--accent-primary); font-family: 'JetBrains Mono'; margin-bottom: 8px;">feature/agent-2-driver-geofence-vision</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Camera scanner interface, MobileFaceNet inference, Haversine GPS trigger, &amp; PIN fallback modal.</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <span class="agent-badge">Agent 3</span>
+                        <div style="font-weight: 600; color: white; margin-bottom: 4px;">Parent App &amp; FCM</div>
+                        <div style="font-size: 0.78rem; color: var(--accent-primary); font-family: 'JetBrains Mono'; margin-bottom: 8px;">feature/agent-3-parent-fcm-location</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Interactive GPS pin picker map, ETA tracker, FCM Alert #1 &amp; Alert #2 push notification handlers.</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <span class="agent-badge">Agent 4</span>
+                        <div style="font-weight: 600; color: white; margin-bottom: 4px;">School Admin Portal</div>
+                        <div style="font-size: 0.78rem; color: var(--accent-primary); font-family: 'JetBrains Mono'; margin-bottom: 8px;">feature/agent-4-school-admin-dashboard</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Next.js Web Admin, real-time fleet surveillance map, student biometric registration, &amp; exception logs.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Command Box -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-terminal"></i> Git Setup &amp; Branch Switch Commands
+                    </div>
+                    <button class="btn-action" style="padding: 6px 12px; font-size: 0.78rem;" onclick="copyGitCommands()">
+                        <i class="fa-solid fa-copy"></i> Copy Script
+                    </button>
+                </div>
+
+                <div class="cmd-box" id="cmdScriptBox"># 1. Clone repository
+git clone https://github.com/nerusugnanadeepa/saferide-ai.git
+cd saferide-ai
+
+# 2. Run automated multi-agent setup script
+# On Windows PowerShell:
+.\git-setup.ps1
+
+# On Linux / macOS / Git Bash:
+chmod +x git-setup.sh && ./git-setup.sh
+
+# 3. Each agent switches to their assigned feature branch:
+# Agent 1: git checkout feature/agent-1-backend-db
+# Agent 2: git checkout feature/agent-2-driver-geofence-vision
+# Agent 3: git checkout feature/agent-3-parent-fcm-location
+# Agent 4: git checkout feature/agent-4-school-admin-dashboard
+
+# 4. Push all branches to GitHub
+git push -u origin --all</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- App Logic Script -->
+    <script>
+        // Tab Switcher
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('view-' + viewName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // GPS Slider Proximity Simulation
+        let currentDistance = 120;
+        function updateGpsProximity(val) {
+            currentDistance = parseInt(val);
+            document.getElementById('distanceVal').innerText = val + 'm';
+            
+            const geofenceElem = document.getElementById('matGeofenceVal');
+            const busStatusElem = document.getElementById('parentBusStatusText');
+            const busEtaElem = document.getElementById('parentEtaText');
+
+            if (currentDistance <= 50) {
+                geofenceElem.innerText = 'INSIDE GEOFENCE (' + val + 'm)';
+                geofenceElem.style.color = 'var(--success-color)';
+                busStatusElem.innerText = 'ARRIVED at Stop #3 (Green Park)';
+                busEtaElem.innerText = 'Bus is waiting at your stop';
+
+                // Trigger Alert #1
+                showParentAlert1();
+            } else {
+                geofenceElem.innerText = 'OUTSIDE (' + val + 'm)';
+                geofenceElem.style.color = 'var(--warning-color)';
+                busStatusElem.innerText = 'En Route to Stop #3';
+                busEtaElem.innerText = 'ETA to your stop: ~' + Math.ceil(currentDistance / 30) + ' mins';
+            }
+        }
+
+        // Trigger Alert #1 (Bus Arrived)
+        let alert1Triggered = false;
+        function showParentAlert1() {
+            if (alert1Triggered) return;
+            alert1Triggered = true;
+            document.getElementById('notifInitial').style.display = 'none';
+            document.getElementById('notifAlert1').style.display = 'flex';
+            document.getElementById('timeAlert1').innerText = new Date().toLocaleTimeString();
+            document.getElementById('notifCount').innerText = '3 Notifications';
+        }
+
+        // Trigger Boarding Scan Simulation
+        function triggerBoardingScan(type) {
+            const box = document.getElementById('boundingBox');
+            const label = document.getElementById('boxLabel');
+            const faceVal = document.getElementById('matFaceVal');
+            const busVal = document.getElementById('matBusVal');
+            const banner = document.getElementById('finalResultBanner');
+            const resultText = document.getElementById('finalResultText');
+
+            if (type === 'VALID') {
+                // Ensure distance is inside geofence for valid test
+                updateGpsProximity(35);
+                document.getElementById('gpsSlider').value = 35;
+
+                box.className = 'bounding-box matched';
+                label.innerText = 'MATCH: ROHAN (0.89)';
+                label.style.color = 'var(--success-color)';
+
+                faceVal.innerText = 'MATCH (Sim: 0.89)';
+                faceVal.style.color = 'var(--success-color)';
+                busVal.innerText = 'Bus 12 (Matched)';
+                busVal.style.color = 'var(--success-color)';
+
+                banner.style.background = 'rgba(16, 185, 129, 0.15)';
+                banner.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+                resultText.innerText = 'VERIFIED — BOARDING CONFIRMED';
+                resultText.style.color = 'var(--success-color)';
+
+                // Trigger Alert #2 on Parent App
+                document.getElementById('notifAlert2').style.display = 'flex';
+                document.getElementById('timeAlert2').innerText = new Date().toLocaleTimeString();
+
+                // Add to Admin Table
+                addAdminRow('STU-9921', 'Rohan Verma', 'Bus 12', 'Bus 12', 'Stop #3 (Green Park)', 'Face Matching (0.89)', 'VERIFIED');
+
+            } else if (type === 'WRONG_BUS') {
+                box.className = 'bounding-box failed';
+                label.innerText = 'FLAGGED: BUS MISMATCH';
+                label.style.color = 'var(--danger-color)';
+
+                faceVal.innerText = 'MATCH (Sim: 0.87)';
+                faceVal.style.color = 'var(--success-color)';
+                busVal.innerText = 'Bus 08 (EXPECTED: Bus 12)';
+                busVal.style.color = 'var(--danger-color)';
+
+                banner.style.background = 'rgba(239, 68, 68, 0.15)';
+                banner.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+                resultText.innerText = 'FLAGGED EXCEPTION: UNASSIGNED BUS';
+                resultText.style.color = 'var(--danger-color)';
+
+                // Trigger Exception Alert
+                document.getElementById('notifAlertException').style.display = 'flex';
+                document.getElementById('timeAlertException').innerText = new Date().toLocaleTimeString();
+
+                // Add to Admin Table
+                addAdminRow('STU-9921', 'Rohan Verma', 'Bus 12', 'Bus 08', 'Stop #3 (Green Park)', 'Unassigned Bus Match', 'FLAGGED EXCEPTION');
+            }
+        }
+
+        function triggerFallbackPin() {
+            const pin = prompt("Enter 4-Digit Student Backup PIN (Parent/Student PIN):", "4921");
+            if (pin === "4921") {
+                alert("✅ PIN Verified! Boarding recorded via Manual PIN Backup.");
+                addAdminRow('STU-9921', 'Rohan Verma', 'Bus 12', 'Bus 12', 'Stop #3 (Green Park)', 'Manual PIN Override', 'PIN VERIFIED');
+            }
+        }
+
+        function addAdminRow(id, name, assignedBus, scannedBus, stop, method, status) {
+            const tbody = document.getElementById('adminTableBody');
+            const tr = document.createElement('tr');
+            const isVerified = status.includes('VERIFIED');
+
+            tr.innerHTML = `
+                <td style="font-family: 'JetBrains Mono';">${id}</td>
+                <td><strong>${name}</strong></td>
+                <td>${assignedBus}</td>
+                <td style="color: ${scannedBus === assignedBus ? 'inherit' : 'var(--danger-color)'}; font-weight: 600;">${scannedBus}</td>
+                <td>${stop}</td>
+                <td>${method}</td>
+                <td style="font-family: 'JetBrains Mono';">${new Date().toLocaleTimeString()}</td>
+                <td>
+                    <span class="status-badge ${isVerified ? 'badge-verified' : 'badge-flagged'}">
+                        <i class="fa-solid ${isVerified ? 'fa-check' : 'fa-triangle-exclamation'}"></i> ${status}
+                    </span>
+                </td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+        }
+
+        function copyGitCommands() {
+            const text = document.getElementById('cmdScriptBox').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("📋 Git commands copied to clipboard!");
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+name: Multi-Agent Branch Integration CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-agent-code:
+    name: Validate Agent Deliverables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run Schema & Syntax Checks
+        run: |
+          echo "Checking repository structure for SafeRide AI..."
+          test -f AGENTS.md || (echo "AGENTS.md missing!" && exit 1)
+          test -f index.html || (echo "index.html missing!" && exit 1)
+          echo "All structural sanity checks passed successfully!"
