@@ -1,0 +1,42 @@
+{
+  "name": "saferide-ai",
+  "version": "1.0.0",
+  "description": "SafeRide AI - Hardware-Free School Bus Student Safety System",
+  "main": "backend/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "concurrently \"node backend/server.js\" \"vite\"",
+    "dev:web": "vite",
+    "dev:backend": "node backend/server.js",
+    "install:all": "npm install && cd backend && npm install && cd ../apps/school_admin && npm install",
+    "build:admin": "cd apps/school_admin && npm run build"
+  },
+  "keywords": [
+    "student-safety",
+    "geofence",
+    "multi-factor-auth",
+    "school-bus",
+    "postgis",
+    "supabase",
+    "flutter"
+  ],
+  "author": "SafeRide AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.475.0",
+    "pg": "^8.13.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "vite": "^6.1.0"
+  }
+}

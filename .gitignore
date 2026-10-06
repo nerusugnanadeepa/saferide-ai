@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+.dart_tool/
+.pub-cache/
+.pub/
+build/
+
+# Package locks & build artifacts
+dist/
+out/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# IDE & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
