@@ -19,11 +19,23 @@ class DriverScannerApp extends StatelessWidget {
     return MaterialApp(
       title: 'SafeRide AI - Driver App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color(0xFF0F172A),
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF7F3EA),
+        cardColor: const Color(0xFFFFFDF8),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF718B75),
+          primary: const Color(0xFF718B75),
+          secondary: const Color(0xFFA65D45),
+          surface: const Color(0xFFFFFDF8),
+        ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1E293B),
-          elevation: 0,
+          backgroundColor: Color(0xFFFFFDF8),
+          foregroundColor: Color(0xFF292824),
+          elevation: 1,
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF292824)),
+          bodyMedium: TextStyle(color: Color(0xFF292824)),
         ),
       ),
       home: const DriverHomeScreen(),

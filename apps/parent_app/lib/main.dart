@@ -15,7 +15,22 @@ class ParentApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SafeRide AI - Parent App',
-      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF7F3EA),
+        cardColor: const Color(0xFFFFFDF8),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF718B75),
+          primary: const Color(0xFF718B75),
+          secondary: const Color(0xFFA65D45),
+          surface: const Color(0xFFFFFDF8),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFFFFDF8),
+          foregroundColor: Color(0xFF292824),
+          elevation: 1,
+        ),
+      ),
       home: const ParentDashboard(),
     );
   }

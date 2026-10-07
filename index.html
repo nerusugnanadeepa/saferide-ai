@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeRide AI — Hardware-Free Student Safety Platform</title>
+    <title>SafeRide AI — Student Safety Platform</title>
     <!-- Modern Google Font & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,20 +12,28 @@
     
     <style>
         :root {
-            --bg-dark: #070a12;
-            --panel-bg: rgba(18, 26, 43, 0.85);
-            --panel-border: rgba(255, 255, 255, 0.1);
-            --accent-primary: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.35);
-            --success-color: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.35);
-            --warning-color: #f59e0b;
-            --warning-glow: rgba(245, 158, 11, 0.35);
-            --danger-color: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.35);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --card-radius: 18px;
+            /* Warm Cream & Sage Green Theme Palette */
+            --bg-warm: #F7F3EA;
+            --card-bg: #FFFDF8;
+            --primary-sage: #718B75;
+            --primary-sage-dark: #59705D;
+            --primary-sage-glow: rgba(113, 139, 117, 0.25);
+            --secondary-terracotta: #A65D45;
+            --secondary-terracotta-dark: #8A4833;
+            --secondary-terracotta-glow: rgba(166, 93, 69, 0.25);
+            --text-main: #292824;
+            --text-muted: #636058;
+            --text-light-muted: #8C877D;
+            --panel-border: rgba(113, 139, 117, 0.2);
+            --card-radius: 20px;
+            --shadow-soft: 0 10px 30px rgba(41, 40, 36, 0.06), 0 2px 6px rgba(41, 40, 36, 0.04);
+            --shadow-hover: 0 16px 36px rgba(41, 40, 36, 0.1), 0 4px 12px rgba(41, 40, 36, 0.05);
+            --success-color: #4A7C59;
+            --success-bg: rgba(74, 124, 89, 0.12);
+            --warning-color: #D97706;
+            --warning-bg: rgba(217, 119, 6, 0.12);
+            --danger-color: #A65D45;
+            --danger-bg: rgba(166, 93, 69, 0.12);
         }
 
         * {
@@ -36,20 +44,20 @@
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-warm);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             background-image: 
-                radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.09) 0%, transparent 45%),
-                radial-gradient(circle at 90% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 45%);
+                radial-gradient(circle at 12% 15%, rgba(113, 139, 117, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 88% 85%, rgba(166, 93, 69, 0.06) 0%, transparent 45%);
             overflow-x: hidden;
         }
 
         /* Top Header */
         header {
-            background: rgba(7, 10, 18, 0.92);
+            background: rgba(255, 253, 248, 0.92);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--panel-border);
             padding: 1rem 2rem;
@@ -59,6 +67,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 20px rgba(41, 40, 36, 0.03);
         }
 
         .brand {
@@ -68,46 +77,44 @@
         }
 
         .brand-icon {
-            width: 46px;
-            height: 46px;
-            background: linear-gradient(135deg, #0284c7, #10b981);
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-sage), var(--primary-sage-dark));
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.35rem;
             color: white;
-            box-shadow: 0 0 24px var(--accent-glow);
+            box-shadow: 0 6px 18px var(--primary-sage-glow);
         }
 
         .brand-title h1 {
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-main);
         }
 
         .brand-title p {
             font-size: 0.78rem;
-            color: var(--accent-primary);
+            color: var(--primary-sage-dark);
             font-weight: 600;
             letter-spacing: 0.5px;
         }
 
         .nav-tabs {
             display: flex;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 5px;
-            border-radius: 14px;
+            background: #F0EAE1;
+            padding: 6px;
+            border-radius: 16px;
             border: 1px solid var(--panel-border);
             gap: 4px;
         }
 
         .nav-tab {
             padding: 9px 18px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: none;
             background: transparent;
             color: var(--text-muted);
@@ -120,15 +127,19 @@
             gap: 8px;
         }
 
+        .nav-tab:hover {
+            color: var(--text-main);
+            background: rgba(255, 253, 248, 0.5);
+        }
+
         .nav-tab.active {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(16, 185, 129, 0.25));
+            background: var(--primary-sage);
             color: #ffffff;
-            border: 1px solid rgba(56, 189, 248, 0.45);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 14px var(--primary-sage-glow);
         }
 
         .github-pill {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             border: 1px solid var(--panel-border);
             padding: 8px 16px;
             border-radius: 20px;
@@ -139,13 +150,14 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: var(--shadow-soft);
         }
 
         .github-pill:hover {
-            color: white;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 15px var(--accent-glow);
+            color: var(--secondary-terracotta);
+            border-color: var(--secondary-terracotta);
+            box-shadow: 0 4px 16px var(--secondary-terracotta-glow);
         }
 
         /* Main Workspace Container */
@@ -155,6 +167,106 @@
             max-width: 1440px;
             margin: 0 auto;
             width: 100%;
+        }
+
+        /* Hero Safety Overview Banner */
+        .hero-dashboard-card {
+            background: var(--card-bg);
+            border-radius: var(--card-radius);
+            border: 1px solid var(--panel-border);
+            padding: 1.75rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background-image: linear-gradient(135deg, #FFFDF8 0%, #F9F5EC 100%);
+        }
+
+        .hero-main-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .bus-badge-lg {
+            background: rgba(113, 139, 117, 0.12);
+            color: var(--primary-sage-dark);
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            border: 1px solid rgba(113, 139, 117, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bus-badge-lg i {
+            font-size: 2rem;
+            color: var(--primary-sage);
+        }
+
+        .hero-title-group h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .hero-title-group p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot-green {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+            box-shadow: 0 0 10px var(--success-color);
+        }
+
+        .safety-pills-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .safety-pill {
+            background: #F4EFE6;
+            border: 1px solid var(--panel-border);
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .safety-pill.verified {
+            background: var(--success-bg);
+            color: var(--success-color);
+            border-color: rgba(74, 124, 89, 0.3);
+        }
+
+        .safety-pill.exception {
+            background: var(--danger-bg);
+            color: var(--danger-color);
+            border-color: rgba(166, 93, 69, 0.3);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 10px;
         }
 
         .view-section {
@@ -180,16 +292,20 @@
             .grid-2, .grid-3, .grid-3-1 { grid-template-columns: 1fr; }
         }
 
-        /* Glass Cards */
+        /* Off-White Rounded Cards with Soft Shadows */
         .glass-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(20px);
+            background: var(--card-bg);
             border: 1px solid var(--panel-border);
             border-radius: var(--card-radius);
             padding: 1.5rem;
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+            box-shadow: var(--shadow-soft);
             position: relative;
             overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .glass-card:hover {
+            box-shadow: var(--shadow-hover);
         }
 
         .card-header {
@@ -207,31 +323,31 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: white;
+            color: var(--text-main);
         }
 
-        .card-title i { color: var(--accent-primary); }
+        .card-title i { color: var(--primary-sage); }
 
         /* Camera Viewfinder & WebCam Feed */
         .camera-viewfinder {
             position: relative;
             width: 100%;
-            height: 310px;
-            background: #020617;
-            border-radius: 14px;
+            height: 320px;
+            background: #202421;
+            border-radius: 16px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid var(--panel-border);
-            transition: border-color 0.3s;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .camera-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scaleX(-1); /* Mirror view for natural feel */
+            transform: scaleX(-1);
         }
 
         .camera-overlay-canvas {
@@ -250,8 +366,8 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            box-shadow: 0 0 15px var(--accent-primary);
+            background: linear-gradient(90deg, transparent, var(--primary-sage), transparent);
+            box-shadow: 0 0 15px var(--primary-sage-glow);
             animation: laserScan 2.5s infinite ease-in-out;
             display: none;
         }
@@ -266,55 +382,55 @@
 
         .bounding-box {
             position: absolute;
-            width: 160px;
-            height: 180px;
-            border: 2px dashed var(--accent-primary);
+            width: 170px;
+            height: 190px;
+            border: 2px dashed var(--primary-sage);
             border-radius: 20px;
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 0 25px var(--primary-sage-glow);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
             padding: 10px;
-            background: rgba(56, 189, 248, 0.05);
+            background: rgba(113, 139, 117, 0.08);
         }
 
         .bounding-box.matched {
             border-color: var(--success-color);
             border-style: solid;
-            box-shadow: 0 0 40px var(--success-glow);
-            background: rgba(16, 185, 129, 0.08);
+            box-shadow: 0 0 35px rgba(74, 124, 89, 0.4);
+            background: rgba(74, 124, 89, 0.12);
         }
 
         .bounding-box.failed {
-            border-color: var(--danger-color);
+            border-color: var(--secondary-terracotta);
             border-style: solid;
-            box-shadow: 0 0 40px var(--danger-glow);
-            background: rgba(239, 68, 68, 0.08);
+            box-shadow: 0 0 35px var(--secondary-terracotta-glow);
+            background: rgba(166, 93, 69, 0.12);
         }
 
         .box-label {
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(41, 40, 36, 0.88);
             padding: 4px 10px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.72rem;
             font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-primary);
+            color: #FFFDF8;
             border: 1px solid var(--panel-border);
         }
 
         /* Slider Controls */
         .slider-container {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
+            background: #F6F1E7;
+            border-radius: 16px;
             padding: 1.25rem;
             border: 1px solid var(--panel-border);
         }
 
         input[type=range] {
             width: 100%;
-            accent-color: var(--accent-primary);
+            accent-color: var(--primary-sage);
             margin: 12px 0;
             cursor: pointer;
         }
@@ -324,16 +440,16 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-height: 380px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 4px;
         }
 
         .notif-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid var(--accent-primary);
-            padding: 14px;
-            border-radius: 10px;
+            background: #F8F4EC;
+            border-left: 4px solid var(--primary-sage);
+            padding: 14px 16px;
+            border-radius: 12px;
             display: flex;
             gap: 14px;
             animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -342,20 +458,20 @@
 
         .notif-item.alert-1 { 
             border-left-color: var(--warning-color); 
-            background: rgba(245, 158, 11, 0.06); 
-            border-color: rgba(245, 158, 11, 0.2); 
+            background: rgba(217, 119, 6, 0.05); 
+            border-color: rgba(217, 119, 6, 0.2); 
         }
 
         .notif-item.alert-2 { 
             border-left-color: var(--success-color); 
-            background: rgba(16, 185, 129, 0.06); 
-            border-color: rgba(16, 185, 129, 0.2); 
+            background: rgba(74, 124, 89, 0.05); 
+            border-color: rgba(74, 124, 89, 0.2); 
         }
 
         .notif-item.alert-danger { 
-            border-left-color: var(--danger-color); 
-            background: rgba(239, 68, 68, 0.06); 
-            border-color: rgba(239, 68, 68, 0.2); 
+            border-left-color: var(--secondary-terracotta); 
+            background: rgba(166, 93, 69, 0.05); 
+            border-color: rgba(166, 93, 69, 0.2); 
         }
 
         @keyframes slideIn {
@@ -363,32 +479,32 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        .notif-title { font-weight: 700; font-size: 0.95rem; color: white; margin-bottom: 3px; }
+        .notif-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 3px; }
         .notif-body { font-size: 0.84rem; color: var(--text-muted); line-height: 1.4; }
-        .notif-time { font-size: 0.72rem; color: var(--accent-primary); margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+        .notif-time { font-size: 0.72rem; color: var(--primary-sage-dark); margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
 
         /* Multi-Factor Status Indicators */
         .stat-card {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem 1.25rem;
-            border-radius: 12px;
+            gap: 1.1rem;
+            background: #F6F1E7;
+            padding: 1.1rem 1.3rem;
+            border-radius: 16px;
             border: 1px solid var(--panel-border);
         }
 
         .stat-icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
         }
 
-        .stat-val { font-size: 1.05rem; font-weight: 700; color: white; }
+        .stat-val { font-size: 1.05rem; font-weight: 700; color: var(--text-main); }
         .stat-lbl { font-size: 0.78rem; color: var(--text-muted); }
 
         .status-badge {
@@ -402,16 +518,16 @@
             letter-spacing: 0.3px;
         }
 
-        .badge-verified { background: rgba(16, 185, 129, 0.18); color: var(--success-color); border: 1px solid rgba(16, 185, 129, 0.35); }
-        .badge-flagged { background: rgba(239, 68, 68, 0.18); color: var(--danger-color); border: 1px solid rgba(239, 68, 68, 0.35); }
-        .badge-pending { background: rgba(245, 158, 11, 0.18); color: var(--warning-color); border: 1px solid rgba(245, 158, 11, 0.35); }
+        .badge-verified { background: var(--success-bg); color: var(--success-color); border: 1px solid rgba(74, 124, 89, 0.35); }
+        .badge-flagged { background: var(--danger-bg); color: var(--secondary-terracotta); border: 1px solid rgba(166, 93, 69, 0.35); }
+        .badge-pending { background: var(--warning-bg); color: var(--warning-color); border: 1px solid rgba(217, 119, 6, 0.35); }
 
         .btn-action {
-            background: linear-gradient(135deg, #0284c7, #0d9488);
+            background: linear-gradient(135deg, var(--primary-sage), var(--primary-sage-dark));
             border: none;
             color: white;
             padding: 11px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 0.88rem;
             cursor: pointer;
@@ -419,36 +535,107 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 14px var(--primary-sage-glow);
         }
 
         .btn-action:hover {
-            filter: brightness(1.15);
-            box-shadow: 0 4px 20px var(--accent-glow);
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+            box-shadow: 0 6px 20px var(--primary-sage-glow);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            background: linear-gradient(135deg, var(--secondary-terracotta), var(--secondary-terracotta-dark));
+            box-shadow: 0 4px 14px var(--secondary-terracotta-glow);
         }
-        .btn-danger:hover { box-shadow: 0 4px 20px var(--danger-glow); }
+        .btn-danger:hover { box-shadow: 0 6px 20px var(--secondary-terracotta-glow); }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
+            background: #F0EAE1;
             border: 1px solid var(--panel-border);
-            color: white;
+            color: var(--text-main);
             padding: 11px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 0.88rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.16); }
+        .btn-secondary:hover { background: #E6DFD4; }
+
+        /* Muted Soft Color Map Styling */
+        .muted-map-box {
+            background: #EAE4D8;
+            border-radius: 16px;
+            border: 1px solid var(--panel-border);
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: 
+                radial-gradient(#D6CDBC 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(113,139,117,0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(113,139,117,0.08) 1px, transparent 1px);
+            background-size: 24px 24px, 40px 40px, 40px 40px;
+        }
+
+        .map-route-line {
+            position: absolute;
+            width: 75%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-sage), var(--secondary-terracotta));
+            border-radius: 4px;
+            top: 50%;
+            left: 12%;
+            transform: translateY(-50%) rotate(-5deg);
+        }
+
+        .map-pin {
+            position: absolute;
+            background: var(--secondary-terracotta);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px var(--secondary-terracotta-glow);
+            border: 2px solid white;
+        }
+
+        .map-bus-pin {
+            position: absolute;
+            background: var(--primary-sage);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 14px var(--primary-sage-glow);
+            border: 2px solid white;
+            top: 42%;
+            left: 38%;
+            animation: pulseBus 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseBus {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         /* Code & Tables */
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
         }
 
         .matrix-table th, .matrix-table td {
@@ -457,7 +644,8 @@
             border-bottom: 1px solid var(--panel-border);
         }
 
-        .matrix-table th { color: var(--text-muted); font-weight: 600; }
+        .matrix-table th { color: var(--text-muted); font-weight: 700; background: #F8F4EC; }
+        .matrix-table td { color: var(--text-main); }
     </style>
 </head>
 <body>
@@ -470,7 +658,7 @@
             </div>
             <div class="brand-title">
                 <h1>SafeRide AI</h1>
-                <p>Hardware-Free Multi-Factor Student Transit Safety System</p>
+                <p>Hardware-Free Student Safety System</p>
             </div>
         </div>
 
@@ -485,7 +673,7 @@
                 <i class="fa-solid fa-chart-line"></i> School Admin Portal
             </button>
             <button class="nav-tab" onclick="switchView('github')">
-                <i class="fa-brands fa-github"></i> 4-Agent Git Workflow
+                <i class="fa-brands fa-github"></i> 4-Agent Workflow
             </button>
         </nav>
 
@@ -497,6 +685,44 @@
     <!-- Main Content Workspace -->
     <main>
         
+        <!-- HERO DASHBOARD SAFETY SUMMARY (Soft Gold & Sage Theme) -->
+        <div class="hero-dashboard-card">
+            <div class="hero-main-info">
+                <div class="bus-badge-lg">
+                    <i class="fa-solid fa-bus"></i>
+                    <div>
+                        <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Assigned Route</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);">Bus #12</div>
+                    </div>
+                </div>
+                <div class="hero-title-group">
+                    <h2>Student Safety Dashboard</h2>
+                    <p><span class="status-dot-green"></span> On Route &bull; <strong>ETA: 08 min</strong></p>
+                </div>
+            </div>
+
+            <div class="safety-pills-row">
+                <div class="safety-pill verified">
+                    <span>✅</span> 24 Students Boarded
+                </div>
+                <div class="safety-pill verified">
+                    <span>🟢</span> 24 Verified
+                </div>
+                <div class="safety-pill exception">
+                    <span>⚠️</span> 1 Exception
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <button class="btn-action" onclick="switchView('parent')">
+                    <i class="fa-solid fa-map-location-dot"></i> Track Bus
+                </button>
+                <button class="btn-secondary" onclick="switchView('admin')">
+                    <i class="fa-solid fa-users"></i> View Students
+                </button>
+            </div>
+        </div>
+
         <!-- VIEW 1: DRIVER APP WITH VISIBLE LIVE CAMERA SCANNER -->
         <section id="view-driver" class="view-section active">
             <div class="grid-3-1">
@@ -522,7 +748,7 @@
                         <div class="scan-laser" id="scanLaser"></div>
                         <div class="bounding-box" id="boundingBox">
                             <span class="box-label" id="boxLabel">FACE CAMERA</span>
-                            <i class="fa-solid fa-expand" style="color: var(--accent-primary); font-size: 1.5rem; opacity: 0.6;"></i>
+                            <i class="fa-solid fa-expand" style="color: var(--primary-sage); font-size: 1.5rem; opacity: 0.8;"></i>
                             <span class="box-label" id="boxScore">SIM: --%</span>
                         </div>
                     </div>
@@ -530,16 +756,16 @@
                     <!-- GPS Stop Proximity Controls -->
                     <div style="margin-top: 1.5rem;" class="slider-container">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <label style="font-weight: 600; font-size: 0.92rem; color: white;">
-                                <i class="fa-solid fa-location-dot" style="color: var(--accent-primary);"></i> 
+                            <label style="font-weight: 700; font-size: 0.92rem; color: var(--text-main);">
+                                <i class="fa-solid fa-location-dot" style="color: var(--secondary-terracotta);"></i> 
                                 Simulated Bus Proximity to Stop #3 (Green Park Colony)
                             </label>
-                            <span id="distanceVal" style="font-family: 'JetBrains Mono'; color: var(--accent-primary); font-weight: 700; font-size: 1rem;">120m</span>
+                            <span id="distanceVal" style="font-family: 'JetBrains Mono'; color: var(--primary-sage-dark); font-weight: 700; font-size: 1rem;">120m</span>
                         </div>
                         <input type="range" id="gpsSlider" min="0" max="150" value="120" oninput="updateGpsProximity(this.value)">
                         <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted);">
                             <span>0m (At Stop)</span>
-                            <span style="color: var(--success-color); font-weight: 600;">Geofence Stop Threshold (&le; 50m)</span>
+                            <span style="color: var(--success-color); font-weight: 700;">Geofence Stop Threshold (&le; 50m)</span>
                             <span>150m (En Route)</span>
                         </div>
                     </div>
@@ -567,14 +793,14 @@
                     </div>
 
                     <!-- Math Formula Specification -->
-                    <div style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 10px; font-family: 'JetBrains Mono'; font-size: 0.78rem; line-height: 1.6; margin-bottom: 1.25rem; border: 1px solid var(--panel-border);">
-                        <span style="color: var(--accent-primary); font-weight: 600;">// Multi-Factor Verification Formula:</span><br>
+                    <div style="background: #F4EFE6; padding: 1rem; border-radius: 12px; font-family: 'JetBrains Mono'; font-size: 0.78rem; line-height: 1.6; margin-bottom: 1.25rem; border: 1px solid var(--panel-border); color: var(--text-main);">
+                        <span style="color: var(--primary-sage-dark); font-weight: 700;">// Multi-Factor Verification Formula:</span><br>
                         Valid = (CosineSim &ge; 0.75) &amp;&amp; (Bus<sub>scanned</sub> == Bus<sub>assigned</sub>) &amp;&amp; (Dist<sub>stop</sub> &le; 50m)
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div class="stat-card">
-                            <div class="stat-icon" style="background: rgba(56,189,248,0.12); color: var(--accent-primary);">
+                            <div class="stat-icon" style="background: rgba(113, 139, 117, 0.15); color: var(--primary-sage-dark);">
                                 <i class="fa-solid fa-face-viewfinder"></i>
                             </div>
                             <div>
@@ -584,7 +810,7 @@
                         </div>
 
                         <div class="stat-card">
-                            <div class="stat-icon" style="background: rgba(16,185,129,0.12); color: var(--success-color);">
+                            <div class="stat-icon" style="background: rgba(74, 124, 89, 0.15); color: var(--success-color);">
                                 <i class="fa-solid fa-bus"></i>
                             </div>
                             <div>
@@ -594,7 +820,7 @@
                         </div>
 
                         <div class="stat-card">
-                            <div class="stat-icon" style="background: rgba(245,158,11,0.12); color: var(--warning-color);">
+                            <div class="stat-icon" style="background: rgba(217, 119, 6, 0.15); color: var(--warning-color);">
                                 <i class="fa-solid fa-draw-polygon"></i>
                             </div>
                             <div>
@@ -604,18 +830,18 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 1.5rem; text-align: center; padding: 1.25rem; border-radius: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--panel-border);" id="finalResultBanner">
-                        <span style="color: var(--text-muted); font-size: 0.8rem; letter-spacing: 1px; font-weight: 600;">MULTI-FACTOR RESULT</span>
+                    <div style="margin-top: 1.5rem; text-align: center; padding: 1.25rem; border-radius: 16px; background: #F6F1E7; border: 1px solid var(--panel-border);" id="finalResultBanner">
+                        <span style="color: var(--text-muted); font-size: 0.8rem; letter-spacing: 1px; font-weight: 700;">MULTI-FACTOR RESULT</span>
                         <div style="font-size: 1.35rem; font-weight: 800; color: var(--text-muted); margin-top: 4px;" id="finalResultText">READY FOR INPUT</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- VIEW 2: PARENT MOBILE APP (TWO-STAGE ALERTS) -->
+        <!-- VIEW 2: PARENT MOBILE APP (TWO-STAGE ALERTS + MUTED MAP) -->
         <section id="view-parent" class="view-section">
             <div class="grid-2">
-                <!-- Left: Parent Dashboard & Live Route Tracker -->
+                <!-- Left: Parent Dashboard & Muted Route Map -->
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-title">
@@ -625,23 +851,33 @@
                     </div>
 
                     <!-- Pickup Stop GPS Card -->
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                    <div style="background: #F6F1E7; border: 1px solid var(--panel-border); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.25rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-weight: 700; font-size: 0.95rem; color: white;">Registered Pickup Location</span>
-                            <span style="font-size: 0.78rem; color: var(--accent-primary); cursor: pointer;" onclick="alert('Opening GPS Map Pin Selector...')"><i class="fa-solid fa-map-pin"></i> Edit Stop Pin</span>
+                            <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">Registered Pickup Location</span>
+                            <span style="font-size: 0.78rem; color: var(--secondary-terracotta); cursor: pointer; font-weight: 700;" onclick="alert('Opening GPS Map Pin Selector...')"><i class="fa-solid fa-map-pin"></i> Edit Stop Pin</span>
                         </div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-location-dot" style="color: var(--danger-color);"></i> Stop #3 — Green Park Colony (Lat: 17.4452, Lng: 78.3812)</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-location-dot" style="color: var(--secondary-terracotta);"></i> Stop #3 — Green Park Colony (Lat: 17.4452, Lng: 78.3812)</p>
                     </div>
 
-                    <!-- Live Bus Status Tracking Card -->
-                    <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 1.25rem; display: flex; align-items: center; gap: 1.25rem;">
-                        <div style="width: 54px; height: 54px; border-radius: 14px; background: rgba(56,189,248,0.2); color: var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                    <!-- Muted Soft-Color Live Route Map -->
+                    <div class="muted-map-box">
+                        <div class="map-route-line"></div>
+                        <div class="map-pin" style="top: 25%; left: 15%;"><i class="fa-solid fa-house"></i></div>
+                        <div class="map-bus-pin">
+                            <i class="fa-solid fa-bus"></i> Bus #12
+                        </div>
+                        <div class="map-pin" style="top: 55%; left: 78%; background: var(--primary-sage);"><i class="fa-solid fa-school"></i></div>
+                    </div>
+
+                    <!-- Live Bus Telemetry Summary -->
+                    <div style="background: rgba(113, 139, 117, 0.08); border: 1px solid rgba(113, 139, 117, 0.25); border-radius: 14px; padding: 1.25rem; display: flex; align-items: center; gap: 1.25rem; margin-top: 1.25rem;">
+                        <div style="width: 54px; height: 54px; border-radius: 14px; background: rgba(113, 139, 117, 0.2); color: var(--primary-sage-dark); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
                             <i class="fa-solid fa-route"></i>
                         </div>
                         <div>
                             <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Live Bus Telemetry</div>
-                            <div style="font-size: 1.15rem; font-weight: 800; color: white;" id="parentBusStatusText">En Route to Stop #3</div>
-                            <div style="font-size: 0.78rem; color: var(--accent-primary); margin-top: 3px; font-weight: 600;" id="parentEtaText">ETA to your stop: ~4 mins</div>
+                            <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);" id="parentBusStatusText">En Route to Stop #3</div>
+                            <div style="font-size: 0.78rem; color: var(--primary-sage-dark); margin-top: 3px; font-weight: 700;" id="parentEtaText">ETA to your stop: ~4 mins</div>
                         </div>
                     </div>
                 </div>
@@ -652,7 +888,7 @@
                         <div class="card-title">
                             <i class="fa-solid fa-bell"></i> Live Push Notification Feed (FCM)
                         </div>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);" id="notifCount">2 Notifications</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;" id="notifCount">2 Notifications</span>
                     </div>
 
                     <div class="notification-feed" id="parentNotifFeed">
@@ -678,16 +914,16 @@
 
                         <!-- EXCEPTION ALERT -->
                         <div class="notif-item alert-danger" id="notifAlertException" style="display: none;">
-                            <i class="fa-solid fa-triangle-exclamation" style="color: var(--danger-color); font-size: 1.3rem; margin-top: 2px;"></i>
+                            <i class="fa-solid fa-triangle-exclamation" style="color: var(--secondary-terracotta); font-size: 1.3rem; margin-top: 2px;"></i>
                             <div>
-                                <div class="notif-title">🚨 SAFETY EXCEPTION LOGGED</div>
+                                <div class="notif-title">⚠️ SAFETY EXCEPTION LOGGED</div>
                                 <div class="notif-body">Boarding exception: Rohan's face was scanned on Bus #08 (Expected: Bus #12). Exception logged for admin.</div>
                                 <div class="notif-time" id="timeAlertException">Just now</div>
                             </div>
                         </div>
 
                         <div class="notif-item" id="notifInitial">
-                            <i class="fa-solid fa-info-circle" style="color: var(--accent-primary); font-size: 1.2rem; margin-top: 2px;"></i>
+                            <i class="fa-solid fa-info-circle" style="color: var(--primary-sage); font-size: 1.2rem; margin-top: 2px;"></i>
                             <div>
                                 <div class="notif-title">System Active</div>
                                 <div class="notif-body">Listening for driver route GPS triggers &amp; boarding scans...</div>
@@ -703,7 +939,7 @@
         <section id="view-admin" class="view-section">
             <div class="grid-3" style="margin-bottom: 1.5rem;">
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(56,189,248,0.12); color: var(--accent-primary);">
+                    <div class="stat-icon" style="background: rgba(113, 139, 117, 0.15); color: var(--primary-sage-dark);">
                         <i class="fa-solid fa-bus"></i>
                     </div>
                     <div>
@@ -713,21 +949,21 @@
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(16,185,129,0.12); color: var(--success-color);">
+                    <div class="stat-icon" style="background: rgba(74, 124, 89, 0.15); color: var(--success-color);">
                         <i class="fa-solid fa-user-shield"></i>
                     </div>
                     <div>
-                        <div class="stat-val" id="adminBoardedCount">482</div>
+                        <div class="stat-val" id="adminBoardedCount" style="color: var(--success-color);">482</div>
                         <div class="stat-lbl">Boarded Students Today</div>
                     </div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(239,68,68,0.12); color: var(--danger-color);">
+                    <div class="stat-icon" style="background: rgba(166, 93, 69, 0.15); color: var(--secondary-terracotta);">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                     <div>
-                        <div class="stat-val" style="color: var(--danger-color);" id="adminExceptionCount">1</div>
+                        <div class="stat-val" style="color: var(--secondary-terracotta);" id="adminExceptionCount">1</div>
                         <div class="stat-lbl">Flagged Exceptions</div>
                     </div>
                 </div>
@@ -794,6 +1030,24 @@
                 <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
                     The repository operates under a strict 4-Agent Execution Strategy with predefined domain boundaries:
                 </p>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background: #F6F1E7; padding: 1.25rem; border-radius: 14px; border: 1px solid var(--panel-border);">
+                        <h4 style="color: var(--primary-sage-dark); margin-bottom: 6px;"><i class="fa-solid fa-database"></i> Agent 1: Backend &amp; DB Core</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">PostgreSQL schema, PostGIS spatial queries, multi-factor matrix API.</p>
+                    </div>
+                    <div style="background: #F6F1E7; padding: 1.25rem; border-radius: 14px; border: 1px solid var(--panel-border);">
+                        <h4 style="color: var(--primary-sage-dark); margin-bottom: 6px;"><i class="fa-solid fa-bus"></i> Agent 2: Driver App &amp; Vision</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">Haversine geofence trigger, MobileFaceNet scanner, manual PIN modal.</p>
+                    </div>
+                    <div style="background: #F6F1E7; padding: 1.25rem; border-radius: 14px; border: 1px solid var(--panel-border);">
+                        <h4 style="color: var(--primary-sage-dark); margin-bottom: 6px;"><i class="fa-solid fa-bell"></i> Agent 3: Parent App &amp; FCM</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">Interactive pickup map pin selector, two-stage FCM notification handler.</p>
+                    </div>
+                    <div style="background: #F6F1E7; padding: 1.25rem; border-radius: 14px; border: 1px solid var(--panel-border);">
+                        <h4 style="color: var(--primary-sage-dark); margin-bottom: 6px;"><i class="fa-solid fa-chart-pie"></i> Agent 4: School Admin Portal</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">Live fleet monitoring, student enrollment dashboard, audit logs.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -898,8 +1152,8 @@
                     busVal.innerText = 'Bus #12 (Matched)';
                     busVal.style.color = 'var(--success-color)';
 
-                    banner.style.background = 'rgba(16, 185, 129, 0.16)';
-                    banner.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+                    banner.style.background = 'rgba(74, 124, 89, 0.15)';
+                    banner.style.border = '1px solid rgba(74, 124, 89, 0.4)';
                     resultText.innerText = 'VERIFIED — BOARDING CONFIRMED';
                     resultText.style.color = 'var(--success-color)';
 
@@ -917,12 +1171,12 @@
                     faceVal.innerText = 'MATCH (Sim: 0.91)';
                     faceVal.style.color = 'var(--success-color)';
                     busVal.innerText = 'Bus #08 (EXPECTED: Bus #12)';
-                    busVal.style.color = 'var(--danger-color)';
+                    busVal.style.color = 'var(--secondary-terracotta)';
 
-                    banner.style.background = 'rgba(239, 68, 68, 0.16)';
-                    banner.style.border = '1px solid rgba(239, 68, 68, 0.45)';
+                    banner.style.background = 'rgba(166, 93, 69, 0.15)';
+                    banner.style.border = '1px solid rgba(166, 93, 69, 0.4)';
                     resultText.innerText = 'FLAGGED EXCEPTION: UNASSIGNED BUS';
-                    resultText.style.color = 'var(--danger-color)';
+                    resultText.style.color = 'var(--secondary-terracotta)';
 
                     document.getElementById('notifAlertException').style.display = 'flex';
                     document.getElementById('timeAlertException').innerText = new Date().toLocaleTimeString();
@@ -949,7 +1203,7 @@
                 <td style="font-family: 'JetBrains Mono';">${id}</td>
                 <td><strong>${name}</strong></td>
                 <td>${assignedBus}</td>
-                <td style="color: ${scannedBus === assignedBus ? 'inherit' : 'var(--danger-color)'}; font-weight: 700;">${scannedBus}</td>
+                <td style="color: ${scannedBus === assignedBus ? 'inherit' : 'var(--secondary-terracotta)'}; font-weight: 700;">${scannedBus}</td>
                 <td>${stop}</td>
                 <td>${method}</td>
                 <td style="font-family: 'JetBrains Mono';">${new Date().toLocaleTimeString()}</td>
